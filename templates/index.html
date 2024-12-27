@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %} Home page {% endblock %} {% block main %}
+<div class="alert alert-info">
+  <h3>Welcome to SeeColours!</h3>{% if no_results %}
+  <p>In order to start using the site and view your personalised results, you first need to complete a colourblindness test.</p>
+  <p>We recommend using the <a href="https://enchroma.com/pages/test" target="_blank" class="link-info"><strong>Enchroma Test</strong></a>.</p>
+  <hr>
+  <p><strong>Once you've completed the test, please submit your results here:</strong></p><a href="/submit_test" class="btn btn-primary btn-lg">Submit Test Results</a> {% else %}
+  <h3>Your Colourblindness Test Results:</h3>
+  <p><strong>Prognosis:</strong> {{ prognosis }}</p>
+  <p><strong>Red Cone Score:</strong> {{ red_score }}%</p>
+  <p><strong>Green Cone Score:</strong> {{ green_score }}%</p>
+  <p><strong>Blue Cone Score:</strong> {{ blue_score }}%</p>
+  <p><a href="/submit_test" class="btn btn-primary">Update Results</a></p>{% endif %}
+</div>{% endblock %}

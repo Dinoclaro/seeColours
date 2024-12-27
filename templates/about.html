@@ -1,0 +1,65 @@
+{% extends "layout.html" %} {% block title %} About {% endblock %} {% block main %}
+<div class="container mt-5">
+  <div class="text-center">
+    <h2 class="mb-4">How Does SeeColours Help?</h2>
+    <p class="lead">SeeColours helps address two of the most frequent questions related to colour vision deficiencies (CVD) when looking at an Ishihara test:</p>
+  </div>
+  <div class="text-center my-4">
+    <img src="{{ url_for('static', filename='images/test-deutan.png') }}"
+         alt="Ishihara Test Example"
+         class="img-fluid rounded shadow-lg"
+         style="max-width: 80%; border: 1px solid #ccc;">
+</div>
+  <div class="text-center my-4">
+    <p><strong>For people without CVD:</strong> "If you cannot see a number, what do you see?"</p>
+    <p><strong>For people with CVD:</strong> "What is the number?"</p>
+  </div>
+  <div class="mt-5">
+    <h3 class="mb-3 text-primary">Types of Colour Vision Deficiencies</h3>
+    <table class="table table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Protanopia</strong></td>
+          <td>Deficient L-cones (centered on red), causing red-green blindness.<br>
+          <span class="text-muted">Affects 2% of males and 0.04% of females.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Deuteranopia</strong></td>
+          <td>Deficient M-cones (centered on green), also causing red-green blindness.<br>
+          <span class="text-muted">Affects 6% of males and 0.4% of females.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tritanopia</strong></td>
+          <td>Deficient S-cones (centered on blue), causing blue-yellow blindness.<br>
+          <span class="text-muted">Extremely rare affecting only 0.002% of males and 0.001% of females.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-5 text-start">
+    <h3 class="mb-3 text-primary">How to Use SeeColours</h3>
+    <ol class="list-group list-group-numbered">
+      <li class="list-group-item">Complete the EnChroma test.</li>
+      <li class="list-group-item">Submit your EnChroma test results.</li>
+      <li class="list-group-item">Upload an image and choose to manipulate it via simulation or daltonization.</li>
+    </ol>
+  </div>
+  <div class="mt-5">
+    <h3 class="mb-3 text-primary">Further Resources</h3>
+    <p>Learn more about CVD through the following resources:</p>
+    <ul class="list-unstyled">
+      <li>
+        <a href="https://www.colourblindawareness.org/colour-blindness-and-sport/" target="_blank" class="btn btn-link">Colourblind Awareness</a> - A great introduction to CVD as a condition.
+      </li>
+      <li>
+        <a href="https://daltonlens.org/colorblindness-simulator" target="_blank" class="btn btn-link">DaltonLens</a> - Explore CVD as a computer science problem.
+      </li>
+    </ul>
+  </div>
+</div>{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %} {% block title %} Submit Test {% endblock %} {% block main %}
+<form action="/submit_test" method="post">
+  <h1 class="mb-4 text-center">Submit Your Test results</h1>
+  <div class="mb-3">
+    <select class="form-control mx-auto w-auto" name="prognosis" id="prognosis" required="">
+      <option value="" disabled selected>
+        Prognosis
+      </option>
+      <option value="protan">
+        Protan
+      </option>
+      <option value="deutan">
+        Deutan
+      </option>
+      <option value="tritan">
+        Tritan
+      </option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <input class="form-control mx-auto w-auto" name="red_score" placeholder="Red Cone Score" type="number">
+  </div>
+  <div class="mb-3">
+    <input class="form-control mx-auto w-auto" name="green_score" placeholder="Green Cone Score" type="number">
+  </div>
+  <div class="mb-3">
+    <input class="form-control mx-auto w-auto" name="blue_score" placeholder="Blue Cone Score" type="number">
+  </div><button class="btn btn-primary" type="submit">Submit Test Resulsts</button>
+</form>{% endblock %}

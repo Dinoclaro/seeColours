@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ mode | capitalize }}{% endblock %} {% block main %}
+<div class="container mt-4">
+  <h1 class="mb-4 text-center">{{ mode | capitalize }}</h1><img id="uploaded-image" src="{{ image_path }}" alt="Uploaded Image" class="img-fluid rounded shadow-lg" data-action="{{ mode }}" data-filename="{{ session['uploaded_file'] }}">
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5>Your Colourblindness Test Results</h5>
+    </div>{% if not prognosis %}
+    <p>You have not submitted results yet! Submit your test results for custom adjustments.</p><a href="/submit_test" class="btn btn-primary btn-lg">Submit Test Results</a> {% else %}
+    <p><strong>Prognosis:</strong> {{ prognosis }}</p>
+    <p><strong>Red Cone Score:</strong> {{ red_score }}%</p>
+    <p><strong>Green Cone Score:</strong> {{ green_score }}%</p>
+    <p><strong>Blue Cone Score:</strong> {{ blue_score }}%</p>
+    <div class="text-center">
+      <a href="#" data-type="user_prognosis" class="btn btn-primary" id="apply-user-prognosis">Apply My Prognosis</a>
+    </div>{% endif %}
+  </div>
+  <h3>Adjust Image Based on Generic Prognosis</h3>
+  <div class="d-flex justify-content-center gap-2">
+    <button class="btn btn-warning prognosis-btn" data-type="protan">Protan Adjustments</button> <button class="btn btn-warning prognosis-btn" data-type="deutan">Deutan Adjustments</button> <button class="btn btn-warning prognosis-btn" data-type="tritan">Tritan Adjustments</button>
+  </div>
+  <div class="text-center mt-4">
+    <h5>Processed Image</h5><img id="processed-image" src="{{ image_path }}" alt="Processed Image" class="img-fluid rounded shadow-lg" data-action="{{ mode }}" data-filename="{{ session['uploaded_file'] }}">
+    <p id="feedback-text"></p>
+    <div id="loading-indicator" style="display: none;">
+      Loading...
+    </div>
+  </div>
+  <hr class="my-4">
+  <div class="text-center">
+    <p class="mb-2">Right-click the image to download it, or use the button below:</p><a href="{{ image_path }}" download=""><button class="btn btn-success">Download Image</button></a>
+  </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const userPrognosisBtn = document.getElementById("apply-user-prognosis");
+        const genericPrognosisBtns = document.querySelectorAll(".prognosis-btn");
+        const uploadedImage = document.getElementById("uploaded-image");
+        const processedImage = document.getElementById("processed-image");
+        const feedbackText = document.getElementById("feedback-text"); // Element to show feedback
+        const loadingIndicator = document.getElementById("loading-indicator"); // Loading spinner
+        const filename = uploadedImage.dataset.filename;  // Get filename from data-filename
+        const action = uploadedImage.dataset.action;  // Get action from data-action
+
+        console.log("Filename:", filename, "Action:", action);
+
+        // Handle user prognosis
+        if (userPrognosisBtn) {
+            userPrognosisBtn.addEventListener("click", () => {
+                fetchImage("user_prognosis", "User-defined prognosis applied.");
+            });
+        }
+
+        // Handle generic prognosis buttons
+        genericPrognosisBtns.forEach(button => {
+            button.addEventListener("click", () => {
+                const type = button.getAttribute("data-type");
+                const feedbackMessage = `${type.charAt(0).toUpperCase() + type.slice(1)} prognosis applied.`;
+                fetchImage(type, feedbackMessage);
+            });
+        });
+
+        // Function to make AJAX request
+        function fetchImage(prognosisType, feedbackMessage) {
+            // Show loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.style.display = "block";
+            }
+
+            // Update feedback text to indicate processing has started
+            if (feedbackText) {
+                feedbackText.textContent = "Processing image...";
+            }
+
+            // Update the fetch URL to use the correct structure
+            fetch(`/process_image/${action}/${prognosisType}/${filename}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.image_url) {
+                        processedImage.src = data.image_url;
+
+                        // Update feedback text with the applied prognosis
+                        if (feedbackText) {
+                            feedbackText.textContent = feedbackMessage;
+                        }
+                    } else {
+                        alert("Failed to process the image.");
+                        if (feedbackText) {
+                            feedbackText.textContent = "Failed to process the image.";
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    if (feedbackText) {
+                        feedbackText.textContent = "An error occurred while processing the image.";
+                    }
+                })
+                .finally(() => {
+                    // Hide loading indicator
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = "none";
+                    }
+                });
+        }
+    });
+</script> {% endblock %}
